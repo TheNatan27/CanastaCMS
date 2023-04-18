@@ -21,35 +21,34 @@ namespace CanastaCMS.Migrations
 
         public int Create()
         {
-            _contentDefinitionManager.AlterPartDefinition(nameof(ResultPart), part => part
-                .
- );
 
-            //        .WithField(nameof(ResultPart.Name), field => field
-            //.OfType(nameof(TextField))
-            //.WithDisplayName("Notes")
-            //.WithSettings(new TextFieldSettings
-            //{
-            //    Hint = "Note for evaulation."
-            //})
-            //.WithEditor("TextArea"))
+            _contentDefinitionManager.AlterPartDefinition("ResultPartShema", part => part
+                .Attachable()
+                .Reusable()
+                .WithField("TestField", field => field
+                    .OfType("TextField")
+                    .WithDisplayName("Test name")
+                    .WithEditor("TextArea"))
+                .WithField("ResultField", field => field
+                    .OfType("TextField")
+                    .WithDisplayName("Test result")
+                    .WithEditor("TextArea"))
+                    .WithDescription("Result part shcema")
+                );
 
-            SchemaBuilder.CreateTable(nameof(ResultPartIndex), table => table
-                .Column<string>(nameof(ResultPartIndex.Name))
-                .Column<string>(nameof(ResultPartIndex.Result))
-            );
-
-            _contentDefinitionManager.AlterTypeDefinition("ResultGallery", type => type
-                .Creatable()
-                .Listable()
+            _contentDefinitionManager.AlterTypeDefinition("ResultGallerySchema", type => type
+                .WithPart("ResultPartSchema")
+                .WithPart("TitlePart")
                 .WithPart("ListPart", part => part
-                    .WithEditor("ListEditor")
+                    .WithEditor("ListArea")
                 )
+                .Creatable()
             );
 
             _contentDefinitionManager.AlterTypeDefinition("ResultWidget", type => type
-                .WithPart(nameof(ResultPart))
+                .WithPart("ResultPartShema")
                 .Stereotype("Widget")
+                .Creatable()
             );
 
             return 1;

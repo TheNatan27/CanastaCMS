@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html lang="{{ Culture.Name }}">
-<head>
+  <head>
     <meta charset="utf-8">
-    <title>{% page_title Site.SiteName, position: "before", separator: " - " %}</title>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{{ "" }}</title>
+    <base href="/">
+    <link rel="stylesheet" href="../styles/site.css">
+
     {% resources type: "Meta" %}
-
-    <!-- INSERT REQUIRED RESOURCES HERE -->
-    
-    {% resources type: "HeadLink" %}
-    {% resources type: "Stylesheet" %}
-    {% resources type: "HeadScript" %}
-</head>
-<body dir="{{ Culture.Dir }}">
-
-    {% render_body %}
-    
-    <footer>
-    {% render_section "Footer", required: false %}
-    </footer>
-    
-    {% script name:"jquery", use_cdn:"true", at:"Foot" %}
-    
-    {% resources type: "FootScript" %}
-</body>
+    <!-- Font Awesome icons (free version)-->
+    {% style name: "font-awesome", version: "6" %}
+      {% resources type: "HeadLink" %}
+      {% resources type: "Stylesheet" %}
+      {% resources type: "HeadScript" %}
+      {% render_section "HeadMeta", required: false %}
+    </head>
+    <body dir="{{ Culture.Dir }}">
+        <div class="header-section"></div>
+        <div class="background">
+            <div class="background-image">
+                <div class="content">
+                {% render_section "Content" %}
+                </div>
+            </div>
+        </div>
+      </body>
+    </body>
+  </head>
 </html>
