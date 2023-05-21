@@ -22,7 +22,7 @@ namespace CanastaCMS.Migrations
         public int Create()
         {
 
-            _contentDefinitionManager.AlterPartDefinition("ResultPartShema", part => part
+            _contentDefinitionManager.AlterPartDefinition(nameof(ResultPart), part => part
                 .Attachable()
                 .Reusable()
                 .WithField("TestField", field => field
@@ -33,21 +33,27 @@ namespace CanastaCMS.Migrations
                     .OfType("TextField")
                     .WithDisplayName("Test result")
                     .WithEditor("TextArea"))
-                    .WithDescription("Result part shcema")
-                );
+                .WithField("NotesField", field => field
+                    .OfType("TextField")
+                    .WithEditor("TextArea")
+                    .WithDisplayName("NotesField"))
+                .WithDescription("Result part experiment")
+            );
 
-            _contentDefinitionManager.AlterTypeDefinition("ResultGallerySchema", type => type
-                .WithPart("ResultPartSchema")
+            _contentDefinitionManager.AlterTypeDefinition("ResultGallery", type => type
                 .WithPart("TitlePart")
                 .WithPart("ListPart", part => part
                     .WithEditor("ListArea")
                 )
                 .Creatable()
+                .Listable()
             );
 
+
             _contentDefinitionManager.AlterTypeDefinition("ResultWidget", type => type
-                .WithPart("ResultPartShema")
+                .WithPart(nameof(ResultPart))
                 .Stereotype("Widget")
+                .Listable()
                 .Creatable()
             );
 

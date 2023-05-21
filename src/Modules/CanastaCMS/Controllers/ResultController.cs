@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using OrchardCore.ContentManagement;
+using OrchardCore.ContentManagement.Records;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using YesSql;
 
 namespace CanastaCMS.Controllers
 {
@@ -14,31 +16,28 @@ namespace CanastaCMS.Controllers
     {
         public List<ResultPart> ResultList { get; }
         private readonly IContentManager _contentManager;
-        public ResultController(IContentManager contentManager)
+        private readonly ISession _session;
+        public ResultController(IContentManager contentManager, ISession session)
         {
             this.ResultList = new List<ResultPart>();
             _contentManager = contentManager;
-
+            _session = session;
         }
-        private async Task<List<ResultPart>> FillResults()
-        {
-            string path = "..\\Modules\\StudyProject03.Core\\Files\\mockresults.json";
-            StreamReader streamReader = new StreamReader(path); string json = await streamReader.ReadToEndAsync();
-            List<ResultPart> resultList = JsonConvert.DeserializeObject<List<ResultPart>>(json);
-            return resultList;
-        }
-
-        [Route("ResultList")]
+       
         public async Task<string> List()
         {
-            List<ResultPart> resultList = await FillResults();
+           // List<ResultPart> resultList = await FillResults();
 
-            foreach (var resultPage in resultList)
+            var resultParts = await _session
+                .Query<ContentItem, ContentItemIndex>(index => index.ContentType == "ResultGallery")
+                .ListAsync();
+
+
+            foreach (var resultPart in resultParts)
             {
-                ContentItem resultItem = resultPage.ContentItem;
-                await _contentManager.LoadAsync(resultItem);
+                await _contentManager.LoadAsync(resultPart);
             }
-            return "hello";
+            return string.Join(", ", resultParts);
         }
     }
 }

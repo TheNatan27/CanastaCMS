@@ -15,4 +15,9 @@ namespace CanastaCMS.Models
         public string Result { get; set; }  
         public TextField Notes { get; set; }
     }
+
+    public class ResultGalleryExperiment : ContentPart
+    {
+        public string Title { get; set; }
+    }
 }

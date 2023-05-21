@@ -32,6 +32,13 @@ namespace CanastaCMS
                 pattern: "Home/Index",
                 defaults: new { controller = "Home", action = "Index" }
             );
+
+            routes.MapAreaControllerRoute(
+                name: "ResultController",
+                areaName: "CanastaCMS",
+                pattern: "Result/List",
+                defaults: new { controller = "Result", action = "List" }
+            );
         }
     }
 }
